@@ -13,7 +13,7 @@ const App = (props: AppProps): JSX.Element => {
       <CssBaseline />
       <Container maxWidth="lg">
         <Typography variant="h3" color="primary">
-          {`Hello ${props.name}, you're in a React + TS project`}
+          {`Hello ${props.name}, you're in a React + TS project and Docker ;)`}
         </Typography>
       </Container>
     </Fragment>
