@@ -1,10 +1,9 @@
-FROM node as builder
+FROM node:14.2-alpine3.10
 WORKDIR /app
+COPY package.json .
+COPY yarn.lock .
+RUN yarn install
 COPY . .
-RUN npm install && npm run build
+EXPOSE 8080
 
-FROM nginx:alpine
-COPY --from=builder /app/dist/ /usr/share/nginx/html/
-# COPY --from=builder /app/public/global.css /usr/share/nginx/html/
-# COPY --from=builder /app/public/index.html /usr/share/nginx/html/
-# COPY --from=builder /app/public/build /usr/share/nginx/html/build/
+ENTRYPOINT npm start

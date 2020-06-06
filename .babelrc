@@ -1,6 +1,6 @@
 {
   "presets": [
-    "@babel/preset-env",
+    ["@babel/preset-env", { "modules": false }],
     "@babel/preset-typescript",
     "@babel/preset-react"
   ],
@@ -12,6 +12,18 @@
         "decoratorsBeforeExport": true
       }
     ],
-    "react-hot-loader/babel"
+    "react-hot-loader/babel",
+    "@babel/plugin-transform-runtime",
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./app"
+        ],
+        "alias": {
+          "components": "./app/components"
+        }
+      }
+    ]
   ]
 }
