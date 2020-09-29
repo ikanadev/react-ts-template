@@ -15,6 +15,7 @@ module.exports = () => {
     return prev;
   }, {});
   return {
+    mode: 'production',
     entry: './app/index',
     output: {
       path: path.join(__dirname, '/dist'),
@@ -61,7 +62,19 @@ module.exports = () => {
         },
         {
           test: /\.css?$/,
-          use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          use: [
+            'style-loader',
+            {
+              loader: MiniCssExtractPlugin.loader,
+            },
+            {
+              loader: 'css-loader',
+              options: {
+                importLoaders: 1,
+              },
+            },
+            'postcss-loader',
+          ],
         },
       ],
     },
@@ -80,10 +93,10 @@ module.exports = () => {
               unused: true,
               comparisons: true,
               sequences: true,
-              dead_code: true, // eslint-disable-line @typescript-eslint/camelcase
+              dead_code: true,
               evaluate: true,
-              if_return: true, // eslint-disable-line @typescript-eslint/camelcase
-              join_vars: true, // eslint-disable-line @typescript-eslint/camelcase
+              if_return: true,
+              join_vars: true,
             },
             output: {
               comments: false,
@@ -92,8 +105,8 @@ module.exports = () => {
             toplevel: false,
             nameCache: null,
             ie8: false,
-            keep_classnames: undefined, // eslint-disable-line @typescript-eslint/camelcase
-            keep_fnames: false, // eslint-disable-line @typescript-eslint/camelcase
+            keep_classnames: undefined,
+            keep_fnames: false,
             safari10: false,
           },
         }),
@@ -115,7 +128,6 @@ module.exports = () => {
           NODE_ENV: JSON.stringify('production'),
         },
       }),
-      new webpack.optimize.ModuleConcatenationPlugin(),
       new CompressionPlugin({
         test: /\.jsx$|\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
         threshold: 10240,

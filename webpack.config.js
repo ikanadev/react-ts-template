@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 module.exports = () => {
   const env = dotenv.config().parsed;
@@ -27,6 +28,7 @@ module.exports = () => {
             loader: 'babel-loader',
             options: {
               cacheDirectory: true,
+              plugins: [require.resolve('react-refresh/babel')],
             },
           },
         },
@@ -40,7 +42,7 @@ module.exports = () => {
         },
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader'],
+          use: ['style-loader', 'css-loader', 'postcss-loader'],
         },
         /*{
           test: /\.html$/,
@@ -55,19 +57,16 @@ module.exports = () => {
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js'],
-      alias: {
-        'react-dom': '@hot-loader/react-dom',
-      },
     },
     devtool: 'eval-source-map',
     plugins: [
       new ForkTsCheckerWebpackPlugin(),
-      new webpack.NamedModulesPlugin(),
       new HtmlWebPackPlugin({
         template: './app/index.html',
         filename: 'index.html',
       }),
       new webpack.DefinePlugin(envKeys),
+      new ReactRefreshWebpackPlugin(),
     ],
     devServer: {
       historyApiFallback: true,
